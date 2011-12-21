@@ -19,7 +19,7 @@
                 &nbsp;| <g:link controller='register' action='forgotPassword'><g:message code='spring.security.ui.login.forgotPassword'/></g:link>	
             </span>
             <br><br>            
-            <g:link controller='register' action='index'><g:message code='spring.security.ui.login.register'/></g:link> &nbsp;&nbsp;
+            <g:link class="button" controller='register' action='index'><g:message code='spring.security.ui.login.register'/></g:link> &nbsp;&nbsp;
             <g:submitButton class="button" name="login" value="Login" />            
         </p>		
     </form>	
