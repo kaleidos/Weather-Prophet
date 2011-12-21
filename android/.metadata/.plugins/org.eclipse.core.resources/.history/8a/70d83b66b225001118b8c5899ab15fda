@@ -1,0 +1,39 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Map;
+
+
+public class Test {
+
+	
+	public static String makePost(String urlString,
+			Map<String, String> parameters) throws IOException {
+				URL urlnew = new URL (urlString);
+				HttpURLConnection con = (HttpURLConnection)urlnew.openConnection();
+			con.setDoInput(true);
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setUseCaches(false);
+			con.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+			con.connect();
+		
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String response=in.readLine();
+			in.close();
+			return response;
+	}
+	
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Test.makePost("http://www.google.com",null);
+
+	}
+
+}

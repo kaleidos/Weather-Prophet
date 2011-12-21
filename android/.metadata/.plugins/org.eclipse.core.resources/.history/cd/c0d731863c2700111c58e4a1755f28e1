@@ -1,0 +1,104 @@
+package net.kaleidos.weatherprophet;
+
+import java.io.IOException;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
+import android.view.View;
+
+public class ShowAlarm extends Activity {
+	
+	static MediaPlayer mMediaPlayer=null;
+	
+	private MediaPlayer getMediaPlayer(){
+		if (ShowAlarm.mMediaPlayer==null){
+			ShowAlarm.mMediaPlayer = new MediaPlayer();
+		} 
+		return ShowAlarm.mMediaPlayer;
+	}
+	
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		//Avoid reset activity at screen rotate
+		super.onConfigurationChanged(newConfig);
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.showalarm);
+		//Get preferences
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		boolean activate=settings.getBoolean("activate", false);
+		if (activate){
+			playAlarm();
+		}else{
+			//We have received a call, but the alarms should be deactivated
+			WeatherUtils.createCancelAlarm(this,false,false);
+			finish();
+		}
+	}
+	
+	public void stopAlarm(View view) {
+		getMediaPlayer().stop();
+		getMediaPlayer().reset();
+		this.moveTaskToBack(true);
+		finish();
+	}
+
+	private void playAlarm() {
+		Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+		if (alert == null) {
+			// alert is null, using backup
+			alert = RingtoneManager
+					.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+			
+			if (alert == null) { 
+				// alert backup is null, using 2nd backup				
+				alert = RingtoneManager
+						.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+			}
+		}
+		
+		try {
+			getMediaPlayer().reset();
+			getMediaPlayer().setDataSource(this, alert);
+			final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+			if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+				getMediaPlayer().setAudioStreamType(AudioManager.STREAM_ALARM);
+				getMediaPlayer().setLooping(true);
+				getMediaPlayer().prepare();
+				getMediaPlayer().start();
+			}
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Vibrate the mobile phone
+		Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+		vibrator.vibrate(2000);
+		
+
+	}
+}

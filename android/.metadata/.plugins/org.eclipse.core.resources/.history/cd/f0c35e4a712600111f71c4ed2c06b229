@@ -1,0 +1,98 @@
+package net.kaleidos.weatherprophet;
+
+public class Preferences {
+	int hour;
+	int minutes;
+	boolean activate;
+	boolean notification;
+	int probRain;
+	boolean rainWakeUp;
+	int offsetRain;
+	boolean rainEmail;
+	int probSnow;
+	boolean snowWakeUp;
+	int offsetSnow;
+	boolean snowEmail;
+	boolean updateServer;
+	public int getHour() {
+		return hour;
+	}
+	public void setHour(int hour) {
+		this.hour = hour;
+	}
+	public int getMinutes() {
+		return minutes;
+	}
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+	public boolean isActivate() {
+		return activate;
+	}
+	public void setActivate(boolean activate) {
+		this.activate = activate;
+	}
+	public boolean isNotification() {
+		return notification;
+	}
+	public void setNotification(boolean notification) {
+		this.notification = notification;
+	}
+	public int getProbRain() {
+		return probRain;
+	}
+	public void setProbRain(int probRain) {
+		this.probRain = probRain;
+	}
+	public boolean isRainWakeUp() {
+		return rainWakeUp;
+	}
+	public void setRainWakeUp(boolean rainWakeUp) {
+		this.rainWakeUp = rainWakeUp;
+	}
+	public int getOffsetRain() {
+		return offsetRain;
+	}
+	public void setOffsetRain(int offsetRain) {
+		this.offsetRain = offsetRain;
+	}
+	public boolean isRainEmail() {
+		return rainEmail;
+	}
+	public void setRainEmail(boolean rainEmail) {
+		this.rainEmail = rainEmail;
+	}
+	public int getProbSnow() {
+		return probSnow;
+	}
+	public void setProbSnow(int probSnow) {
+		this.probSnow = probSnow;
+	}
+	public boolean isSnowWakeUp() {
+		return snowWakeUp;
+	}
+	public void setSnowWakeUp(boolean snowWakeUp) {
+		this.snowWakeUp = snowWakeUp;
+	}
+	public int getOffsetSnow() {
+		return offsetSnow;
+	}
+	public void setOffsetSnow(int offsetSnow) {
+		this.offsetSnow = offsetSnow;
+	}
+	public boolean isSnowEmail() {
+		return snowEmail;
+	}
+	public void setSnowEmail(boolean snowEmail) {
+		this.snowEmail = snowEmail;
+	}
+	public boolean isUpdateServer() {
+		return updateServer;
+	}
+	public void setUpdateServer(boolean updateServer) {
+		this.updateServer = updateServer;
+	}
+	
+	
+
+}

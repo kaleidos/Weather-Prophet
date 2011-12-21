@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="320" key="DIALOG_WIDTH"/>
+		<item value="206" key="DIALOG_Y_ORIGIN"/>
+		<item value="408" key="DIALOG_HEIGHT"/>
+		<item value="1188" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="true" key="wrap"/>
+		<item value="false" key="isRegEx"/>
+		<item value="true" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="debug" key="selection"/>
+		<list key="findhistory">
+			<item value="debug"/>
+			<item value="WakeUpR"/>
+			<item value="WakeUp"/>
+			<item value="HOUR"/>
+			<item value="activate"/>
+			<item value="notification"/>
+			<item value="notify"/>
+			<item value="readPreferencesRemote"/>
+		</list>
+		<list key="replacehistory">
+			<item value=""/>
+			<item value=";"/>
+			<item value="snow"/>
+			<item value="Snow"/>
+			<item value="http"/>
+			<item value="android:layout_marginBottom=&quot;10dp&quot;"/>
+			<item value="999999"/>
+			<item value="#FFFFFF"/>
+		</list>
+	</section>
+</section>

@@ -1,0 +1,78 @@
+package net.kaleidos.weatherprophet;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Preferences {
+	int hour;
+	int minutes;
+	boolean activate;
+	boolean notification;
+	int probRain;
+	boolean rainWakeUp;
+	int offsetRain;
+	boolean rainEmail;
+	int probSnow;
+	boolean snowWakeUp;
+	int offsetSnow;
+	boolean snowEmail;
+
+	public Preferences(int hour, int minutes, boolean activate,
+			boolean notification, int probRain, boolean rainWakeUp,
+			int offsetRain, boolean rainEmail, int probSnow,
+			boolean snowWakeUp, int offsetSnow, boolean snowEmail) {
+		super();
+		this.hour = hour;
+		this.minutes = minutes;
+		this.activate = activate;
+		this.notification = notification;
+		this.probRain = probRain;
+		this.rainWakeUp = rainWakeUp;
+		this.offsetRain = offsetRain;
+		this.rainEmail = rainEmail;
+		this.probSnow = probSnow;
+		this.snowWakeUp = snowWakeUp;
+		this.offsetSnow = offsetSnow;
+		this.snowEmail = snowEmail;
+	}
+
+	public static Preferences createFromJson(JSONObject prefs) {
+		JSONArray alarms;
+		try {
+			alarms = prefs.getJSONArray("alarms");
+
+			JSONObject rain = alarms.getJSONObject(0);
+			JSONObject snow = alarms.getJSONObject(1);
+
+			if (!"RAIN".equals(rain.getString("type"))) {
+				JSONObject aux = rain;
+				rain = snow;
+				snow = aux;
+			}
+			int hour=(prefs.has("hour")?prefs.getInt("hour"):0);
+			int minutes=(prefs.has("minutes")?prefs.getInt("minutes"):0);
+			boolean activate=(prefs.has("activate")?prefs.getBoolean("activate"):false);
+			boolean notification=(prefs.has("notification")?prefs.getBoolean("notification"):false);
+			
+			int rainOffset=
+			
+			return new Preferences(
+					hour, 
+					minutes, 
+					activate, 
+					notification,
+					rain.getInt("probability"),
+					rain.getBoolean("notifyMobile"),
+					0,//TODO: rain.getInt("offsetAlarm")
+					rain.getBoolean("notifyEmail"),
+					snow.getInt("probability"),
+					snow.getBoolean("notifyMobile"),
+					0,//TODO:snow.getInt("offsetAlarm"), 
+					snow.getBoolean("notifyEmail"));
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+
+}

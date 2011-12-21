@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/btnSetSound"
+        android:title="@string/set_sound"/>
+    <item
+        android:id="@+id/btnWipe"
+        android:title="@string/wipe"/>
+    <item
+        android:id="@+id/btnAbout"
+        android:title="@string/about"/>
+
+</menu>

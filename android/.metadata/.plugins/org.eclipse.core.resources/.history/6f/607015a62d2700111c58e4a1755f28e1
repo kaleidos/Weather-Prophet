@@ -1,0 +1,5 @@
+package net.kaleidos.weatherprophet;
+
+public class BootService {
+
+}

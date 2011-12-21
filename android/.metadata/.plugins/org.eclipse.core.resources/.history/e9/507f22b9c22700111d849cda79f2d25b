@@ -1,0 +1,170 @@
+package net.kaleidos.weatherprophet;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+public class PreferencesController {
+	WeatherProphetActivity weatherProphet;
+
+	public PreferencesController(WeatherProphetActivity weatherProphet) {
+		super();
+		this.weatherProphet = weatherProphet;
+	}
+
+	/**
+	 * Read preferences for server, and save them on the device
+	 * 
+	 * @return true if the preferences could be readed
+	 */
+	public static boolean readPreferencesRemote(Context context, String authToken) {
+
+		if (WeatherUtils.checkInternetConnection(context)) {
+			String authToken=
+
+			List<NameValuePair> parameters = new ArrayList<NameValuePair>(1);
+			parameters.add(new BasicNameValuePair("authToken", weatherProphet
+					.getAuthToken()));
+			try {
+
+				JSONObject json = WeatherUtils.readRemoteJson(
+						WeatherUtils.URL_ALARMS, parameters, "GET");
+				if (json.getBoolean("success")) {
+					Preferences prefs = Preferences.createFromJson(json);
+					savePreferences(prefs, false, false);
+					return true;
+				} else {
+					return false;
+				}
+
+			} catch (Exception e) {
+				return false;
+			}
+		} else {
+			// We don't have internet conection
+			return false;
+		}
+	}
+
+	public void savePreferences(Preferences preferences, boolean updateMobile,
+			boolean updateServer) {
+		// Save preferences
+
+		
+		SharedPreferences settings = weatherProphet.getSharedPreferences("WEATHERPROPHET", weatherProphet.MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor = settings.edit();
+
+		if (updateMobile) {
+			editor.putInt("baseHour", preferences.hour);
+			editor.putInt("baseMinute", preferences.minutes);
+			editor.putBoolean("rainWakeUp", preferences.rainWakeUp);
+			editor.putBoolean("notification", preferences.notification);
+
+			editor.putInt("offsetRain", preferences.offsetRain);
+		}
+		editor.putBoolean("activate", preferences.activate);
+
+		// Rain
+		editor.putInt("probRain", preferences.probRain);
+		editor.putBoolean("rainEmail", preferences.rainEmail);
+		editor.putBoolean("updatedPreferences", true);
+
+		editor.commit();
+
+		// Save remote preferences
+		if (updateServer){
+			if (savePreferencesRemote(weatherProphet,preferences,weatherProphet.authToken)) {
+				WeatherUtils.debug(weatherProphet,"Preferences saved");
+				// Mark as updated
+				editor.putBoolean("updatedPreferences", true);
+			}else{
+				WeatherUtils.debug(weatherProphet,"Preferences NOT saved");
+				// Mark as not updated
+				editor.putBoolean("updatedPreferences", false);
+			}
+			editor.commit();
+		}
+	}
+	
+	public static boolean savePreferencesRemote(Context context, String authToken){
+		Preferences preferences=readLocalPreferences(context);
+		return savePreferencesRemote(context,preferences,authToken);
+		
+	}
+
+	private static boolean savePreferencesRemote(Context context, Preferences preferences, String authToken) {
+
+		if (WeatherUtils.checkInternetConnection(context)) {
+			List<NameValuePair> parameters = new ArrayList<NameValuePair>(4);
+
+			parameters.add(new BasicNameValuePair("authToken",authToken));
+			parameters.add(new BasicNameValuePair("probabilityRain", Integer
+					.toString(preferences.probRain)));
+			parameters.add(new BasicNameValuePair("notifyEmailRain", Boolean
+					.toString(preferences.rainEmail)));
+			parameters.add(new BasicNameValuePair("notifyMobileRain", Boolean
+					.toString(preferences.activate)));
+			try {
+				JSONObject json = WeatherUtils.readRemoteJson(
+						WeatherUtils.URL_ALARMS_UPDATE, parameters, "POST");
+				if (json.getBoolean("success")) {
+					return true;
+				} else {
+					return false;
+				}
+			} catch (Exception e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+
+	}
+
+	private static Preferences readLocalPreferences(Context context) {
+		SharedPreferences settings = context.getSharedPreferences("WEATHERPROPHET", context.MODE_PRIVATE);
+
+		int hour = settings.getInt("baseHour", 0);
+		int minutes = settings.getInt("baseMinute", 0);
+		boolean activate = settings.getBoolean("activate", false);
+		boolean notification = settings.getBoolean("notification", false);
+
+		// Rain
+		int probRain = settings.getInt("probRain", 0);
+		boolean rainWakeUp = settings.getBoolean("rainWakeUp", false);
+		int offsetRain = settings.getInt("offsetRain", 0);
+		boolean rainEmail = settings.getBoolean("rainEmail", false);
+
+
+		Preferences p = new Preferences(hour, minutes, activate, notification,
+				probRain, rainWakeUp, offsetRain, rainEmail);
+		return p;
+	}
+
+	public Preferences loadPreferences() {
+		// Restore preferences
+
+		if (weatherProphet.logIn()) {
+			SharedPreferences settings = weatherProphet.getSharedPreferences("WEATHERPROPHET", weatherProphet.MODE_PRIVATE);
+
+			if (!settings.getBoolean("updatedPreferences", true)) {
+				savePreferencesRemote(weatherProphet,readLocalPreferences(weatherProphet),weatherProphet.authToken);
+			} 
+			readPreferencesRemote();
+			return readLocalPreferences(weatherProphet);
+
+		} else {
+			return null;
+		}
+
+	}
+
+}

@@ -1,0 +1,14 @@
+<resources>
+
+    <string-array name="offsets">
+        <item>15min</item>
+        <item>30min</item>
+        <item>45min</item>
+        <item>1h</item>
+        <item>1h 15min</item>
+        <item>1h 30min</item>
+        <item>1h 45min</item>
+        <item>2h</item>
+    </string-array>
+    
+</resources>

@@ -1,0 +1,64 @@
+1323701397397	Rename type 'AlarmReceiver'
+1323701429252	Delete element
+1323702069802	Rename type 'WheatherCheck'
+1323702122961	Rename type 'AlarmReceiver'
+1323704124191	Copy compilation unit
+1323704156225	Delete element
+1323709926772	Copy file
+1323710071336	Extracts string 'null' into R.string.wake_up
+1323710172250	Extracts string 'null' into R.string.stop_alarm
+1323710706601	Copy file
+1323710774548	Delete element
+1323710805855	Delete element
+1323710829974	Copy file
+1323712055431	Extracts string 'null' into R.string.base_hour
+1323712143671	Extracts string 'null' into R.string.time_offset
+1323712315423	Extracts string 'null' into R.string.minutes
+1323712730182	Delete element
+1323712968258	Delete element
+1323713084271	Extracts string 'null' into R.string.activate
+1323767450261	Delete element
+1323769621956	Extracts string 'null' into R.string.save
+1323784463007	Extracts string 'null' into R.string.notification
+1323792019775	Copy file
+1323792168430	Extracts string 'null' into R.string.login
+1323792223035	Extracts string 'null' into R.string.username
+1323792278291	Extracts string 'null' into R.string.password
+1323792308130	Extracts string 'null' into R.string.submit
+1323792386783	Copy compilation unit
+1323854451157	Delete element
+1323856431698	Wrap in Container
+1323856528955	Extracts string 'null' into R.string.rainalarm
+1323857195177	Delete element
+1323857441442	Extracts string 'null' into R.string.snowalarm
+1323857721470	Extracts string 'null' into R.string.activaterainalarm
+1323859947577	Extracts string 'null' into R.string.ifrain
+1323860002522	Extracts string 'null' into R.string.wakemerain
+1323860357787	Extracts string 'null' into R.string.morning
+1323860380656	Extracts string 'null' into R.string.evening
+1323860399610	Extracts string 'null' into R.string.night
+1323860679985	Delete element
+1323861841095	Extracts string 'null' into R.string.sendmail
+1323862033843	Delete element
+1323865499486	Delete element
+1323867087232	Delete element
+1323962146699	Delete element
+1323968345005	Extracts string 'null' into R.string.prevision
+1323968884541	Delete element
+1324020985719	Move file
+1324021904198	Delete element
+1324022018831	Copy file
+1324022060432	Extracts string 'null' into R.string.web
+1324022088852	Extracts string 'null' into R.string.close
+1324022171405	Extracts string 'null' into R.string.kaleidos
+1324022212742	Extracts string 'null' into R.string.weatherprophet
+1324022224549	Extracts string 'null' into R.string.version
+1324022509334	Delete element
+1324022522842	Delete element
+1324022525339	Delete element
+1324022529710	Delete element
+1324022777348	Extracts string 'null' into R.string.kaleidos_web
+1324022888615	Copy compilation unit
+1324022967652	Rename resource 'help.xml'
+1324026685987	Copy compilation unit
+1324026847912	Extracts string 'null' into R.string.snooze

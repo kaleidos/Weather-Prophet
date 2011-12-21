@@ -1,0 +1,7 @@
+package net.kaleidos.weatherprophet;
+
+import android.app.Service;
+
+public class BootService extends Service{
+
+}

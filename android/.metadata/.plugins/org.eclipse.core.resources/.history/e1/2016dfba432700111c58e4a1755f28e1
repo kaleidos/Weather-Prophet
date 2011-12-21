@@ -1,0 +1,168 @@
+package net.kaleidos.weatherprophet;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
+
+public class WeatherCheckService extends Service{
+
+	private boolean raining;
+	private int probRain;
+	private String prettyDay;
+	
+	
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
+	}
+	
+	private void checkWeatherProphetWeb(String day){
+		settings = getSharedPreferences("WEATHERPROPHET", MODE_PRIVATE);
+		
+		raining=settings.getBoolean("isRaining", false);
+		
+		
+		if (WeatherUtils.checkInternetConnection(this)){
+			
+			
+			List<NameValuePair> parameters = new ArrayList<NameValuePair>(2);
+			parameters.add(new BasicNameValuePair("authToken", settings.getString("authToken", "0")));
+			parameters.add(new BasicNameValuePair("day", day));
+			try {
+
+				JSONObject json = WeatherUtils.readRemoteJson(
+						WeatherUtils.URL_ALARMS_ACTIVATED, parameters, "GET");
+				if (json.getBoolean("success")) {
+					raining=json.getBoolean("rainAlarmActivated");
+					prettyDay=json.getString("prettyDay");
+					probRain=json.getInt("probRain");
+					Editor editor=settings.edit();
+					editor.putString("prettyDay", prettyDay);
+					editor.putInt("probRainToday", probRain);
+					editor.commit();
+					settings = getSharedPreferences("WEATHERPROPHET", MODE_PRIVATE);
+					System.out.println("");
+				} else {
+					//Do nothing
+				}
+
+			} catch (Exception e) {
+				//Do nothing
+				System.out.println(e.toString());
+			}
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * If updatedPreferences is false, try to save the preferences to the server
+	 * @param settings
+	 */
+	private void savePreferencesIfNeeded(SharedPreferences settings){		
+		if (!settings.getBoolean("updatedPreferences", true)) {
+			if (PreferencesController.savePreferencesRemote(this,settings.getString("authToken", "0"))){
+				Editor editor=settings.edit();
+				editor.putBoolean("updatedPreferences", true);
+				editor.commit();
+			}
+		} 
+	}
+	
+	
+	@Override
+	public void onStart(Intent intent, int startid) {
+		//Get preferences
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		savePreferencesIfNeeded(settings);
+		
+		boolean activate=settings.getBoolean("activate", false);
+		//If the alarms are active
+		if (activate){
+			int hour = settings.getInt("baseHour", 0);
+			int minute = settings.getInt("baseMinute", 0);
+			Calendar now=Calendar.getInstance();
+			Calendar calendar = Calendar.getInstance();
+	        calendar.set(Calendar.HOUR_OF_DAY, hour);
+	        calendar.set(Calendar.MINUTE, minute);
+	        calendar.set(Calendar.SECOND, 0);
+	        
+	        // If past time, set to tomorrow
+	        if (now.after(calendar)){
+	        	calendar.add(Calendar.DAY_OF_YEAR, 1);	        	
+	        }	
+	        
+	        String day="today";
+	        if (now.get(Calendar.DAY_OF_MONTH)!=calendar.get(Calendar.DAY_OF_MONTH)){
+	        	day="tomorrow";
+	        }
+	        
+	        checkWeatherProphetWeb(day);
+	        
+	        
+	        
+	        int offset=0;
+	        if (settings.getBoolean("rainWakeUp", false) && raining){
+	        	//offset+1 is the number of hour quarters
+	        	offset=(settings.getInt("offsetRain", 0)+1)*15;
+	        }
+			
+			//Check API for conditions
+			if (offset>0){
+				//change wake up time
+				Calendar calendarOffset=Calendar.getInstance();
+				calendarOffset.setTimeInMillis(calendar.getTimeInMillis());
+								
+				calendarOffset.add(Calendar.MINUTE,-offset);
+				
+				//If calendar was in future, but calendarOffset in past, set alarm for now!!! (or in 5 seconds)
+				if ((now.before(calendar)&&(now.after(calendarOffset)))){
+					calendar.setTimeInMillis(now.getTimeInMillis());
+					calendar.add(Calendar.SECOND, 5);
+				}else{
+					calendar=calendarOffset;
+				}
+			}
+			
+					
+	
+			//Set wakeupcall
+			setWakeUpCall(calendar.getTimeInMillis());
+		}else{
+			//We have received a call, but the alarms should be deactivated
+			WeatherUtils.createCancelAlarm(this,false,false);
+		}
+	}
+	
+	
+	private void setWakeUpCall(long timeMillis){
+		Intent intent = new Intent(this, WakeUpReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(
+				this.getApplicationContext(), 1, intent, 0);
+		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		
+		//Cancel any previous alarms
+		alarmManager.cancel(pendingIntent);
+		
+		//Create new alarms
+		alarmManager.set(AlarmManager.RTC_WAKEUP, timeMillis, pendingIntent);
+	}
+	
+	
+
+}

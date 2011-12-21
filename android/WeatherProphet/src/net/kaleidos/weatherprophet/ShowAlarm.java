@@ -1,0 +1,148 @@
+package net.kaleidos.weatherprophet;
+
+import java.io.IOException;
+import java.util.Calendar;
+
+import android.app.Activity;
+import android.app.KeyguardManager;
+import android.app.KeyguardManager.KeyguardLock;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.os.Vibrator;
+import android.view.View;
+import android.widget.TextView;
+
+public class ShowAlarm extends Activity {
+	
+	static MediaPlayer mMediaPlayer=null;
+	private KeyguardLock lock;
+	private WakeLock wl;
+	
+	private MediaPlayer getMediaPlayer(){
+		if (ShowAlarm.mMediaPlayer==null){
+			ShowAlarm.mMediaPlayer = new MediaPlayer();
+		} 
+		return ShowAlarm.mMediaPlayer;
+	}
+	
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		//Avoid reset activity at screen rotate
+		super.onConfigurationChanged(newConfig);
+	}
+	
+	@Override
+	public void onStop(){
+		super.onStop();
+		lock.reenableKeyguard();	
+		wl.release();
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.showalarm);
+
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK|PowerManager.ACQUIRE_CAUSES_WAKEUP, "bbbb");
+		wl.acquire();
+		
+		KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
+		lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
+		lock.disableKeyguard();
+		
+		//Get preferences
+		SharedPreferences settings = getSharedPreferences("WEATHERPROPHET", MODE_PRIVATE);
+		
+		boolean activate=settings.getBoolean("activate", false);
+		if (activate){
+			String prettyString=settings.getString("prettyDay", "Sunny");
+			int probRain=settings.getInt("probRainToday", 0);
+			
+			TextView txtPrevisionPretty = (TextView) findViewById(R.id.txtPrevisionPretty);
+			TextView txtPrevisionProb = (TextView) findViewById(R.id.txtPrevisionProb);
+			
+			txtPrevisionPretty.setText("Today will be: "+prettyString);
+			txtPrevisionProb.setText("Rain probability: "+probRain+"%");
+			
+			
+			playAlarm(prettyString, probRain);
+			
+			Calendar calendar=WeatherUtils.getAlarmCalendar(settings);
+			Editor editor=settings.edit();
+			editor.putLong("lastAlarmSound", calendar.getTimeInMillis());
+			editor.commit();
+			
+		}else{
+			//We have received a call, but the alarms should be deactivated
+			WeatherUtils.createCancelAlarm(this,false,false);
+			finish();
+		}
+	}
+	
+	public void stopAlarm(View view) {
+		getMediaPlayer().stop();
+		getMediaPlayer().reset();
+		this.moveTaskToBack(true);
+		finish();
+	}
+	
+	public void snooze(View view) {
+		Calendar calendar=Calendar.getInstance();
+		calendar.add(Calendar.MINUTE, 10);
+		//Set wakeupcall
+		WeatherUtils.setAlarm(this, calendar.getTimeInMillis(), WakeUpReceiver.class);
+		stopAlarm(view);
+	}
+
+	private void playAlarm(String prettyDay, int probRain) {
+		
+		SharedPreferences settings = getSharedPreferences("WEATHERPROPHET",
+  				MODE_PRIVATE);
+		String sound=settings.getString("sound", "content://settings/system/ringtone");
+		
+		
+		
+		Uri alert = Uri.parse(sound);
+		
+		
+		try {
+			getMediaPlayer().reset();
+			getMediaPlayer().setDataSource(this, alert);
+			final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+			if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+				getMediaPlayer().setAudioStreamType(AudioManager.STREAM_ALARM);
+				getMediaPlayer().setLooping(true);
+				getMediaPlayer().prepare();
+				getMediaPlayer().start();
+			}
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Vibrate the mobile phone
+		Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+		vibrator.vibrate(2000);
+		
+
+	}
+}

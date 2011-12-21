@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Weather Prophet v0.004</string>
+    <string name="app_name">WeatherProphet</string>
+    <string name="wake_up">Wake Up!</string>
+    <string name="stop_alarm">Stop Alarm</string>
+    <string name="base_hour">Set your base wake up hour</string>
+    <string name="time_offset">Set offset</string>
+    <string name="minutes">5</string>
+    <string name="activate">Activate Wake Up Call</string>
+    <string name="save">Save Preferences</string>
+    <string name="notification">Show notification icon</string>
+    <string name="login">Log In</string>
+    <string name="username">User name</string>
+    <string name="password">Password</string>
+    <string name="submit">Submit</string>
+    <string name="rainalarm">Rain Alarm</string>
+    <string name="snowalarm">Snow Alarm</string>
+    <string name="activaterainalarm">Activate Rain Alarm</string>
+    <string name="ifrain">If rain probability is higer than</string>
+    <string name="wakemerain">Wake me earlier</string>
+    <string name="morning">Morning</string>
+    <string name="evening">Evening</string>
+    <string name="night">Night</string>
+    <string name="sendmail">Send me an email at</string>
+
+</resources>

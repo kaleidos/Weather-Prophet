@@ -1,0 +1,18 @@
+package net.kaleidos.weatherprophet;
+
+public class Preferences {
+	int hour;
+	int minutes;
+	boolean activate;
+	boolean notification;
+	int probRain;
+	boolean rainWakeUp;
+	int offsetRain;
+	boolean rainEmail;
+	int probSnow;
+	boolean snowWakeUp;
+	int offsetSnow;
+	boolean snowEmail;
+	boolean updateServer;
+
+}

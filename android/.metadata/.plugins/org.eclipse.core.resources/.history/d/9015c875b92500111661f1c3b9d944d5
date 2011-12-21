@@ -1,0 +1,189 @@
+package net.kaleidos.weatherprophet;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+public abstract class WeatherUtils {
+	public static int[] splitTimeFromNow(long millis) {
+		long now = System.currentTimeMillis();
+		long delta = millis - now;
+
+		int hours = Math.round(delta / 3600000l);
+		delta = delta % 3600000l;
+
+		int minutes = Math.round(delta / 60000l);
+		delta = delta % 60000l;
+
+		int seconds = Math.round(delta / 1000);
+
+		int[] result = { hours, minutes, seconds };
+
+		return result;
+	}
+
+	/**
+	 * Give a string describing the time as "2 hours, 3 minutes, 5 seconds"
+	 * 
+	 * @param millis
+	 * @return
+	 */
+	public static String prettyTimeFromNow(long millis) {
+		int[] splitTime = WeatherUtils.splitTimeFromNow(millis);
+		String prettyTime = " ";
+		// TODO Multilingual
+		if (splitTime[0] > 0) {
+			prettyTime += splitTime[0] + " horas";
+		}
+		if (splitTime[1] > 0) {
+			prettyTime += splitTime[1] + " minutos";
+		}
+		if (splitTime[2] > 0) {
+			prettyTime += splitTime[2] + " segundos";
+		}
+		return prettyTime;
+	}
+
+	public static JSONArray readRemoteJson(String urlString,
+			Map<String, String> parameters) throws IOException, JSONException {
+		// Construct data
+		String data = "";
+		boolean first = true;
+		for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext();) {
+			String key = it.next();
+			if (first) {
+				first = false;
+			} else {
+				data += "&";
+			}
+			data += URLEncoder.encode(key, "UTF-8") + "="
+					+ URLEncoder.encode(parameters.get(key), "UTF-8");
+		}
+
+		// Send data
+		URL url = new URL(urlString);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+		con.setDoInput(true);
+	    con.setDoOutput(true);
+	    //con.setRequestMethod("POST");
+	    con.setUseCaches(false);
+	    con.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+	    con.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+	    
+	    
+	    OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+		wr.write(data);
+		wr.flush();
+
+		// Get the response
+
+		// Read all the text returned by the server
+	    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	    String str;
+	    StringBuffer response=new StringBuffer();
+	    while ((str = in.readLine()) != null) {
+	        // str is one line of text; readLine() strips the newline character(s)
+	    	response.append(str);
+	    }
+	    in.close();
+	    
+
+		JSONArray jsonArray = new JSONArray(response.toString());
+		return jsonArray;
+		/*
+		 * Log.i(Login.class.getName(), "Number of entries " +
+		 * jsonArray.length()); for (int i = 0; i < jsonArray.length(); i++) {
+		 * JSONObject jsonObject = jsonArray.getJSONObject(i);
+		 * Log.i(Login.class.getName(), jsonObject.getString("text")); }
+		 */
+
+	}
+
+	public static String makePost(String urlString,
+			Map<String, String> parameters) throws IOException {
+		    // Create a URL for the desired page
+		    URL url = new URL(urlString);
+		    
+		    
+		    ////////////////
+		    HttpURLConnection con = (HttpURLConnection)url.openConnection();
+		    con.setDoInput(true);
+		    con.setDoOutput(true);
+		    con.setRequestMethod("POST");
+		    con.setUseCaches(false);
+		    con.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+		    con.connect();
+		    ///////////
+		    
+		    
+
+		    // Read all the text returned by the server
+		    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		    String str;
+		    StringBuffer response=new StringBuffer();
+		    while ((str = in.readLine()) != null) {
+		        // str is one line of text; readLine() strips the newline character(s)
+		    	response.append(str);
+		    }
+		    in.close();
+
+			return response.toString();
+	}
+	
+	
+	public String postData(String url, List<NameValuePair> nameValuePairs) {
+	    // Create a new HttpClient and Post Header
+	    HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost httppost = new HttpPost("http://www.yoursite.com/script.php");
+
+	    try {
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+	        // Execute HTTP Post Request
+	        HttpResponse httpResponse = httpclient.execute(httppost);
+	        HttpEntity entity = httpResponse.getEntity();
+	        StringBuffer response=new StringBuffer();
+	        // Read all the text returned by the server
+	        if (entity!=null){
+			    BufferedReader in = new BufferedReader(new InputStreamReader(entity.getContent()));
+			    String str;
+			    while ((str = in.readLine()) != null) {
+			        // str is one line of text; readLine() strips the newline character(s)
+			    	response.append(str);
+			    }
+			    in.close();
+	        }
+
+			return response.toString();
+	        
+	        
+	    } catch (ClientProtocolException e) {
+	        // TODO Auto-generated catch block
+	    } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	    }
+	} 
+	
+	
+}

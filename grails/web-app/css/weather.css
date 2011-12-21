@@ -1,0 +1,486 @@
+/********************************************
+   AUTHOR:  			Erwin Aligam 
+   WEBSITE:   			http://www.styleshout.com/
+	TEMPLATE NAME: 	NewHorizon
+   TEMPLATE CODE: 	S-0018
+   VERSION:          1.0	
+	DATE:          	October-01-2007
+ *******************************************/ 
+ 
+/********************************************
+   HTML ELEMENTS
+********************************************/ 
+
+/* top elements */
+* { padding: 0; margin: 0; outline: 0; }
+
+body {
+	margin: 10px 0 0 0; 	padding: 0;
+	font: normal 13px/1.6em  verdana, tahoma, sans-serif;	 
+	text-align: center;
+	background: #090807 url(../images/skin/bg.jpg) repeat-x;
+	color: #8F8F8E; 	
+}
+
+/* links */
+a {
+	color: #fff;		
+	background-color: inherit;
+	text-decoration: none;			
+}
+a:hover {	
+	color: #E2B300;
+	background-color: inherit;	
+}
+
+/* headers */
+h1, h2, h3, h4 {
+	font: normal 1em 'Trebuchet MS', Tahoma, Arial, Sans-serif;
+	color: #eee;
+}
+h1 { font-size: 3em; color: #84A5DA; letter-spacing: -2px;	} 
+h2 { font-size: 2.5em; }
+h3 { font-size: 1.8em; }
+h4 { font-size: 1.5em; }
+
+p, h1, h2, h3, h4 {
+	margin: 0;
+	padding: 10px 15px;
+}
+
+ul, ol {
+	margin: 10px 30px;
+	padding: 0 15px;	
+}
+
+/* images */
+img {
+	background: transparent;
+   border: 3px solid #383735;	
+}
+img.float-right {
+   margin: .5em 0 1em 1em;   
+}
+img.float-left {
+   margin: .5em 1em 1em 0;
+}
+
+code {
+  margin: .5em 0;
+  display: block;
+  padding: 20px;
+  text-align: left; 
+  overflow: auto;  
+  font: 500 1em/1.5em 'Lucida Console', 'Courier New', monospace ;
+  /* white-space: pre; */
+  background: transparent;
+  border: 1px solid #211E20;   
+}
+acronym {
+  cursor: help;
+  border-bottom: 1px dotted #8F8F8E;
+}
+blockquote {
+	margin: 10px 15px;
+ 	padding: 10px 0 10px 30px;  
+   background: transparent;
+	border: 1px solid #211E20;   
+  	font: normal 1.6em/1.5em Georgia, "Times New Roman", Times, serif;
+}
+
+/* start - table */
+table {
+	margin: 10px 15px; 
+	border-collapse: collapse;
+}
+th strong {
+	color: #fff;
+}
+th {
+	background: #090807;
+	color: #fff;
+	height: 3em;
+	padding-left: 12px;
+	padding-right: 12px;	
+	text-align: left;
+	border-left: 1px solid #211E20;
+	border-right: 1px solid #211E20;
+	border-bottom: 1px solid #211E20; 
+	border-top: 2px solid #E2B300;
+}
+
+.head th {
+    text-align: center;
+}
+
+tr {
+	color: #707070;
+	height: 2.5em;	
+}
+tr.head {
+    border: 1px solid #211E20;
+}
+td {
+	padding-left: 12px;
+	padding-right: 12px;
+    text-align: center;
+}
+/* end - table */
+
+/* form elements */
+form {
+	margin: 10px 15px; 
+	padding: 10px;
+	background: transparent;
+	border: 1px solid #211E20;  
+}
+fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+label {
+	display:block;
+	font-weight:bold;
+	margin: .4em 0;	
+}
+input {
+	padding: .3em;
+	border: 1px solid #eee;
+	font: normal 1em Verdana, sans-serif;
+	color:#777;
+}
+textarea {
+	width: 55%;
+	padding: .3em;
+	font: normal 1em/1.5em Verdana, sans-serif;
+	border: 1px solid #eee;
+	height: 10em;
+	display:block;
+	color:#777;
+}
+input.button { 
+	font: bold 1em Arial, Tahoma, Sans-serif; 
+	margin: 0;
+	padding: .25em .3em;
+	color: #fff;
+	background: #000;
+	border: 2px solid #211E20; 
+    cursor: pointer;    
+}
+input.button:hover{
+    color: #E2B300
+}
+/* search form */
+.searchform {
+	background-color: transparent;
+	border: none;	
+	margin: 0 0 0 10px; padding: 0 0 1.5em 0;	
+	width: 20em;	
+}
+.searchform p { margin: 0; padding: 0; }
+.searchform input.textbox { 
+	width: 11em;
+	color: #777; 
+	padding: .4em; 
+	border: 1px solid #E5E5E5;
+	vertical-align: top;
+}
+.searchform input.button { 
+	width: 80px;
+	vertical-align: top;
+}
+
+/***********************
+	  LAYOUT
+************************/
+
+#header, #nav, #content, #footer-wrap {
+	width: 910px;
+}
+
+/* header */
+#header {
+	clear: both;
+	position: relative;
+	margin: 0 auto; padding: 0;
+	height: 240px;
+	text-align: left;	
+}
+#header #clouds {
+	position: absolute;
+	background: transparent url(../images/skin/xbmc_weather_addons.png) no-repeat;
+	left: 575px;
+	width: 309px;
+	height: 260px;
+}
+#header h1#logo-text a {
+	position: absolute;
+	margin: 0; padding: 0;
+	font: bold 58px 'Trebuchet MS', Tahoma, Arial, Sans-serif;
+	letter-spacing: -3px;
+	color: #0a1e53;
+	text-decoration: none;
+	z-index: 9998;
+	background: transparent;
+	
+	/* change the values of top and left to adjust the position of the logo*/
+	top: 33px; left: 10px;	
+}
+#header p#slogan {
+	position: absolute;	
+	font: normal 19px 'Trebuchet Ms', Sans-serif;
+	text-transform: none;
+	color: #fff;
+	margin: 0; padding: 0;
+	z-index: 9999;
+	
+	/* change the values of left and top to adjust the position of the slogan */
+	top: 95px; left: 25px;
+}
+
+/* Navigation */
+#nav {
+	clear: both;	
+	margin: 0 auto;
+	padding: 0;		
+}
+#nav ul {
+	float: left;
+	list-style: none;
+	text-transform: uppercase;
+	margin: 0;	padding: 0;	
+	height: 56px;		
+}
+#nav ul li {
+	float: left;
+	margin: 0; padding: 0;
+	height: 56px;
+}
+#nav ul li a {
+	display: block;
+	float: left;
+	width: auto;
+	margin: 0;
+	padding: 0 20px;
+	color: #a5a5a5;
+	font: bold 16px/54px "Trebuchet MS", Helvetica, Arial, sans-serif;
+	text-decoration: none;	
+	letter-spacing: 1px;	
+}
+#nav ul li a:hover, 
+#nav ul li a:active {
+	color: #fff;		
+}
+#nav ul li#current a {	
+	color: #FF8B04;	
+}
+
+/* content */
+#content-wrap {
+	clear: both;
+	float: left;
+	width: 100%;
+	background: #12120f url(../images/skin/footer-top.jpg) repeat-x left bottom;
+}
+#content {
+	text-align: left;	
+	padding: 0; 
+	margin: 0 auto;		
+}
+
+/* sidebar */
+#sidebar {
+	float: right;
+	width: 24em;
+	margin: 10px 0 10px -21em; 
+	padding: 0;		
+}
+#sidebar h3 {
+	font: normal 1.6em 'Trebuchet MS', Tahoma, Arial, Sans-serif;
+	padding: .3em 0 .5em 10px; 
+	color: #E2B300;			
+	text-transform: none;
+	letter-spacing: -1px;	
+}
+
+#sidebar ul.sidemenu {
+	margin: 0 0 0 10px;
+	padding: .1em 0 1em 0;		
+	font-family: 'Trebuchet MS', Tahoma, Sans-serif;		
+	border-top: 1px solid #211E20;
+}
+#sidebar ul.sidemenu li {
+	padding: 0; 
+	background: url(../images/skin/bullet.jpg) no-repeat .5em .6em;		
+	border-bottom: 1px solid #211E20; 
+	list-style:none;
+}
+
+* html body #sidebar ul.sidemenu li { height: 1%; }
+
+#sidebar ul.sidemenu li a {
+	display: block;
+	font-weight: bold;
+	color: #d3d0cc;
+	text-decoration: none;
+	padding: .2em 0 .2em 30px;
+	line-height: 1.5em;
+	font-size: 1.25em;
+}
+#sidebar ul.sidemenu li a:hover {
+	color: #E2B300;				
+}
+#sidebar ul.sidemenu ul { margin: 0 0 0 15px; }
+#sidebar ul.sidemenu ul li { border: none; }
+
+/* main */
+#main {
+	margin: 10px 26em 10px 0; 
+	padding: 0;		
+}
+#main h2 { 
+	font: normal 2.9em 'Trebuchet MS', Arial, Sans-serif;
+	color: #84A5DA;	
+	letter-spacing: -2px;		
+	padding-bottom: 0px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #211E20; 	
+}
+#main h2 a {
+	color: #84A5DA;	
+	text-decoration: none;	
+}
+
+#footer-wrap {	
+	clear: both;
+	padding: 0;	margin: 0 auto; 
+}
+
+/* columns */
+#columns {
+	clear: both;
+	text-align: left;
+	color: #5B9CFF;
+	margin: 0 auto; 
+	padding: 1.6em 0 .5em 0;
+	width: 95%;	
+}
+#columns h3 {
+	color: #99CC33;	
+	margin: 0;
+	padding: 0 10px; 	
+	font: normal 1.4em "Trebuchet MS", Arial, Tahoma, Sans-serif;	
+	text-transform: uppercase;
+}
+
+#columns ul {
+	list-style: none;
+	margin: 10px 0 0 0; 
+	padding: 0;	
+	border-top: 1px solid #111;	
+}
+#columns li {
+	border-bottom: 1px solid #111;		
+}
+#columns li a {
+	display: block;
+	padding: .5em 0 .5em 1em;
+	color: #8F8F8E;
+}
+#columns li a:hover {
+	color: #fff;	
+}
+
+#columns .col3, .col3-center {
+	float: left;
+	width: 31%;
+}
+#columns .col3-center { 
+	margin: 0 15px; 
+}
+
+/* footer */
+#footer-bottom {
+	clear: both;
+	margin: 0 auto; 
+	padding: 1em 0 1.5em 0;
+	text-align: center;
+	font-size: .85em;
+    
+}
+
+#footer-bottom img{
+    border:0;
+    vertical-align:middle;
+}
+
+
+/* alignment classes */
+.float-left  { float: left; }
+.float-right { float: right; }
+.align-left  {	text-align: left; }
+.align-right {	text-align: right; }
+
+/* additional classes */
+.clear { clear: both; }
+.grey {	color: #8F8F8E; }
+
+.post-by {
+	font-size: .9em;	
+	padding-top: 0;
+}
+
+.post-footer { 
+	text-align: right; 
+	background: transparent;
+	border: 1px solid #211E20; 
+	padding: 5px 10px;
+	margin: 20px 15px 10px 15px;
+}
+.post-footer .date, 
+.post-footer .comments,
+.post-footer .readmore {
+	padding-left: 20px; margin: 0 3px 0 3px;
+}
+ 
+.errors, .message {
+    color: #E2B300;
+}
+
+#sidebar ul.sidemenu li a.selected {
+    color: #E2B300;
+}
+
+#sliderRain {float: left; width: 475px; margin-right:10px;}
+#amountRain {margin-left:5px;}
+
+
+
+/* CUSTOM IVAN */
+/*
+
+
+.header {border-bottom:1px solid #F6931F; float:left; width:100%;}
+
+.user {float:left; font-size:14px;}
+.menu-header {float:right; margin-left:10px;}
+.menu-header-selected {color:#F6931F !important;}
+.menu-header a:hover {color:#F6931F;}
+
+.update-settings label {width:150px; display:block; float:left;}
+.update-settings input[type=text], .update-settings input[type=password] {width:225px;}*/
+
+.checkbox-login {float: left; margin:4px 10px 0 0;}
+.label-checkbox-login {float: left; margin: 0; padding: 0;}
+
+
+#tablePassword td{
+    border:0;
+}
+
+.center100{
+    width:100%;
+    text-align:center;
+}
+

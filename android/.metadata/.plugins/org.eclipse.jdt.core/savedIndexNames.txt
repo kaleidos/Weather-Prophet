@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+/home/palba/proyectos/kaleidos/weather/android/.metadata/.plugins/org.eclipse.jdt.core
+2172474434.index
+583758821.index
+1827953342.index

@@ -1,0 +1,68 @@
+package net.kaleidos.weatherprophet;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class Preferences {
+	int hour;
+	int minutes;
+	boolean activate;
+	boolean notification;
+	int probRain;
+	boolean rainWakeUp;
+	int offsetRain;
+	boolean rainEmail;
+	int probSnow;
+	boolean snowWakeUp;
+	int offsetSnow;
+	boolean snowEmail;
+	
+	public Preferences(int hour, int minutes, boolean activate,
+			boolean notification, int probRain, boolean rainWakeUp,
+			int offsetRain, boolean rainEmail, int probSnow,
+			boolean snowWakeUp, int offsetSnow, boolean snowEmail) {
+		super();
+		this.hour = hour;
+		this.minutes = minutes;
+		this.activate = activate;
+		this.notification = notification;
+		this.probRain = probRain;
+		this.rainWakeUp = rainWakeUp;
+		this.offsetRain = offsetRain;
+		this.rainEmail = rainEmail;
+		this.probSnow = probSnow;
+		this.snowWakeUp = snowWakeUp;
+		this.offsetSnow = offsetSnow;
+		this.snowEmail = snowEmail;
+	}
+	
+	public Preferences(JSONObject prefs){
+		JSONArray alarms=prefs.getJSONArray("alarms");
+		JSONObject rain=alarms.getJSONObject(0);
+		JSONObject snow=alarms.getJSONObject(1);
+		
+		if (!"RAIN".equals(rain.getString("type"))){
+			JSONObject aux=rain;
+			rain=snow;
+			snow=aux;
+		}
+		this(
+		0, 
+		0, 
+		false, 
+		false, 
+		rain.getInt("probability"), 
+		rain.getBoolean("notifyMobile"), 
+		offsetRain, 
+		rainEmail, 
+		probSnow, 
+		snowWakeUp, 
+		offsetSnow, 
+		snowEmail);
+	}
+	
+	
+	
+	
+
+}
