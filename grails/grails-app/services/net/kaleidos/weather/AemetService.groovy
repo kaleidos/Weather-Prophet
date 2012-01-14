@@ -59,7 +59,7 @@ class AemetService {
 	
 	def generateForecast (String codeCity, String day) {
 		def parsedResults = weatherParser(codeCity, day)
-        def now = new Date()
+        def now = System.currentTimeMillis()
         def forecast = new Forecast(parsedResults[0],now, parsedResults[1])
         return forecast
 		

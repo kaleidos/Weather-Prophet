@@ -52,7 +52,7 @@ class GoogleWeatherService {
 			default: rain = 0; break;
 		}
 			
-		def now = new Date()
+		def now = System.currentTimeMillis()
 		
 		def forecast = new Forecast(rain, now, textForecast)
 		return forecast

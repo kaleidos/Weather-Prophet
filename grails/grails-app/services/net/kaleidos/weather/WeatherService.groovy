@@ -1,5 +1,4 @@
 package net.kaleidos.weather
-import groovy.time.TimeCategory
 
 class WeatherService {
     
@@ -23,14 +22,11 @@ class WeatherService {
         def forecast = getCache().get(newKey)
         
         if (forecast){
-            use(TimeCategory) {
-                def now = new Date()
-                diff = forecast.lastModified - now
-                diff = diff.minutes
-            }
+            def now = System.currentTimeMillis()
+            diff = now - forecast.lastModified
         }
         
-        if (!forecast || ( diff > 60 )) {
+        if (!forecast || ( diff > 3600000 )) {
             forecast = generateForecast(citycode, wsource, day)
             getCache()[newKey] = forecast
         }

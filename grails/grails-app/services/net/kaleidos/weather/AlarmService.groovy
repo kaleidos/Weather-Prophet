@@ -31,7 +31,7 @@ class AlarmService {
             user.rainAlarmActivedTomorrow = false
         }
         
-        println "--->needsAlarm "+user.username+": " +user.rainAlarmActivedTomorrow
+        //println "--->needsAlarm "+user.username+": " +user.rainAlarmActivedTomorrow
         
         user.save()
     }
@@ -60,8 +60,7 @@ class AlarmService {
     
     
     
-    def sendNotification(User user) {
-        
+    def sendNotification(User user) {        
         def forecast = weatherService.checkWeather(user.citycode, user.wsource, 'tomorrow')
 		def body = """
         <p>Hello ${user.username},</p>
@@ -70,9 +69,9 @@ class AlarmService {
 		asynchronousMailService.sendAsynchronousMail {
 			to user.email
 			from 'no-reply@weatherprophet.kaleidos.net'
-			subject 'Tomorrow will rain and you will get wet'
+			subject 'Tomorrow will rain'
 			html body
-		}        
+		}
     }
     
 }

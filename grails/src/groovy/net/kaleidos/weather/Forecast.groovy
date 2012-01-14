@@ -4,7 +4,7 @@ class Forecast {
     
     int rain
     String prettyDay
-    Date lastModified
+    long lastModified
 	
 	Forecast(rain, lastModified, prettyDay) {
 		this.rain = rain

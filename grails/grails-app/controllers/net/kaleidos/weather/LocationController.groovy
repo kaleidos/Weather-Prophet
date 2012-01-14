@@ -8,6 +8,7 @@ class LocationController {
     
     def weatherService
 	def googleWeatherService
+    def alarmService
 	
     def search = {
         
@@ -57,6 +58,7 @@ class LocationController {
     }
     
     def asynchronousMailService
+*/
     def testsendemail = {
         
         def user = User.get(1L)
@@ -64,6 +66,6 @@ class LocationController {
 
         render "TEST" 
     }
-*/
+
 
 }
