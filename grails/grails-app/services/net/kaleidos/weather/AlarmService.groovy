@@ -48,11 +48,16 @@ class AlarmService {
     
         //First of all, update forecasts
         checkForecast()
-        
+        date=new Date()
+        println "==================================================================="
+        println date
         User.findAll().each { user ->
             if (user.wsource) {
                 if (user.rainAlarmActivedTomorrow) {
+                    println "------->DEBUG: Send notification to "+user.username
                     sendNotification(user)
+                }else{
+                    println "------->DEBUG: Do not send notification to "+user.username
                 }
             }
         }
