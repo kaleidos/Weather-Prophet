@@ -15,7 +15,7 @@ class NotifyUsersJob {
     }
 
     def execute() {
-        log.info "Executing checkAlarms service"
+        log.debug "Executing checkAlarms service"
         alarmService.checkAlarms()
     }
 }

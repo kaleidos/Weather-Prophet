@@ -41,6 +41,8 @@ class RegisterController extends grails.plugins.springsecurity.ui.RegisterContro
 			body = evaluate(body, [user: user, url: url])
 		}
         
+        print "--->REGISTER: "+body.toString()
+        
 		asynchronousMailService.sendAsynchronousMail {
 			to command.email
 			from conf.ui.register.emailFrom
@@ -130,6 +132,9 @@ class RegisterController extends grails.plugins.springsecurity.ui.RegisterContro
 		if (body.contains('$')) {
 			body = evaluate(body, [user: user, url: url])
 		}
+        
+        print "--->RESET PASSWORD: "+body.toString()
+        
 		asynchronousMailService.sendAsynchronousMail {
 			to user.email
 			from conf.ui.forgotPassword.emailFrom
