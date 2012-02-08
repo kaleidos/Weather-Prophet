@@ -93,6 +93,10 @@ log4j = {
     warn   'org.mortbay.log'
     
     debug  'grails'
+    
+    appenders {
+        'null' name: "stacktrace"
+    }
 }
 
 // Added by the Spring Security Core plugin:
