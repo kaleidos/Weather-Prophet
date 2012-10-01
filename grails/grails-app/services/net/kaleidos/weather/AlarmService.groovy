@@ -15,25 +15,27 @@ class AlarmService {
     }
     
     def checkForecastUser(User user) {
-        def forecast = weatherService.checkWeather(user.citycode, user.wsource, 'today')
-        if (needsAlarm(forecast, user)) {
-            user.rainAlarmActivedToday = true
-        } else {
-            user.rainAlarmActivedToday = false
+        if ((user.citycode) && (user.wsource)){
+            def forecast = weatherService.checkWeather(user.citycode, user.wsource, 'today')
+            if (needsAlarm(forecast, user)) {
+                user.rainAlarmActivedToday = true
+            } else {
+                user.rainAlarmActivedToday = false
+            }
+            
+            
+            
+            forecast = weatherService.checkWeather(user.citycode, user.wsource, 'tomorrow')
+            if (needsAlarm(forecast, user)) {
+                user.rainAlarmActivedTomorrow = true
+            } else {
+                user.rainAlarmActivedTomorrow = false
+            }
+            
+            //println "--->needsAlarm "+user.username+": " +user.rainAlarmActivedTomorrow
+            
+            user.save()
         }
-        
-        
-        
-        forecast = weatherService.checkWeather(user.citycode, user.wsource, 'tomorrow')
-        if (needsAlarm(forecast, user)) {
-            user.rainAlarmActivedTomorrow = true
-        } else {
-            user.rainAlarmActivedTomorrow = false
-        }
-        
-        //println "--->needsAlarm "+user.username+": " +user.rainAlarmActivedTomorrow
-        
-        user.save()
     }
     
     def needsAlarm(Forecast forecast, User user) {        
@@ -65,18 +67,20 @@ class AlarmService {
     
     
     
-    def sendNotification(User user) {        
-        def forecast = weatherService.checkWeather(user.citycode, user.wsource, 'tomorrow')
-		def body = """
-        <p>Hello ${user.username},</p>
-        <p>The probability of rain tomorrow in ${user.city} is ${forecast.rain}%</p>
-        """
-		asynchronousMailService.sendAsynchronousMail {
-			to user.email
-			from 'no-reply@weatherprophet.kaleidos.net'
-			subject 'Tomorrow will rain'
-			html body
-		}
+    def sendNotification(User user) { 
+        if ((user.citycode) && (user.wsource)){       
+            def forecast = weatherService.checkWeather(user.citycode, user.wsource, 'tomorrow')
+            def body = """
+            <p>Hello ${user.username},</p>
+            <p>The probability of rain tomorrow in ${user.city} is ${forecast.rain}%</p>
+            """
+            asynchronousMailService.sendAsynchronousMail {
+                to user.email
+                from 'no-reply@weatherprophet.kaleidos.net'
+                subject 'Tomorrow will rain'
+                html body
+            }
+        }
     }
     
 }
