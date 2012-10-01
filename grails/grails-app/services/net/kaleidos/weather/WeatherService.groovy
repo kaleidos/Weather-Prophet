@@ -3,7 +3,8 @@ package net.kaleidos.weather
 class WeatherService {
     
     static HashMap cache
-    def googleWeatherService
+    //Google API is down
+    //def googleWeatherService
     def aemetService
     
     
@@ -57,12 +58,14 @@ class WeatherService {
     def generateForecast(CityCode citycode, WeatherSource wsource, String day) {
         
         def forecast
-        
-        if (wsource.name == 'google') {
+        //Google API is down
+        /*if (wsource.name == 'google') {
             forecast = googleWeatherService.generateForecast(citycode.googlecode, day)
         } else if (wsource.name == 'aemet') {
             forecast = aemetService.generateForecast(citycode.aemetcode, day)
-        }
+        }*/
+        
+        forecast = aemetService.generateForecast(citycode.aemetcode, day)
         
         return forecast
         

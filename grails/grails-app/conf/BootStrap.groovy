@@ -19,13 +19,14 @@ class BootStrap {
         def userRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_USER').save(failOnError: true)
 		def adminRole = Role.findByAuthority('ROLE_ADMIN') ?: new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
         
-        def googlesource = WeatherSource.findByName('google')
+        //Google API is down
+        /*def googlesource = WeatherSource.findByName('google')
         if (!googlesource) {
             googlesource = new WeatherSource(name:'google',
                                              urlCity:'http://www.google.com/ig/api?weather=',
                                              urlWeather:'http://www.google.com/ig/api?weather=')
             googlesource.save()
-        }
+        }*/
         
         def aemetsource = WeatherSource.findByName('aemet')
         if (!aemetsource) {
@@ -47,7 +48,7 @@ class BootStrap {
                             enabled:true, 
                             city:'Madrid',
                             citycode:citycode,
-                            wsource:googlesource)
+                            wsource:aemetsource)
 			user.save(flush:true)
         	UserRole.create(user, userRole)
 		}

@@ -7,7 +7,7 @@ class LocationController {
     ]
     
     def weatherService
-	def googleWeatherService
+	//def googleWeatherService
     def alarmService
 	
     def search = {
